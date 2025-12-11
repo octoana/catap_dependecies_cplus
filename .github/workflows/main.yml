@@ -23,7 +23,7 @@ jobs:
           cmakeListsOrSettingsJson: 'CMakeLists.txt'
 
       - name: Submit dependencies to GitHub Dependency Graph
-        uses: github/dependency-submission-toolkit@v3
+        uses: github/dependency-submission-toolkit@v1
         with:
           # You can point to your vcpkg manifest, lockfile, or CMake config
           manifest-path: vcpkg.json
