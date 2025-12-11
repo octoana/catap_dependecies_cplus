@@ -2,13 +2,7 @@
   "name": "cpp-sfml-sqlite-test",
   "version": "0.1.0",
   "dependencies": [
-    {
-      "name": "sfml",
-      "version>=": "3.0.0"
-    },
-    {
-      "name": "sqlite3",
-      "version>=": "3.50.3"
-    }
+    "sfml",
+    "sqlite3"
   ]
 }
