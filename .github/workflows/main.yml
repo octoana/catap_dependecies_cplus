@@ -8,12 +8,13 @@ on:
   push:
     branches: [main]
 
+env:
+  VCPKG_FEATURE_FLAGS: dependencygraph
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      VCPKG_FEATURE_FLAGS: dependencygraph
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
