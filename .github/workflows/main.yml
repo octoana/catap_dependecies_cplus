@@ -3,6 +3,7 @@ name: Build and Submit Dependencies
 permissions:
   contents: write
   id-token: write
+  actions: write
 
 on:
   push:
@@ -11,6 +12,7 @@ on:
 env:
   VCPKG_FEATURE_FLAGS: dependencygraph
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  ACTIONS_STEP_DEBUG: true
 
 jobs:
   build:
@@ -35,8 +37,14 @@ jobs:
         run: |
           echo "VCPKG_FEATURE_FLAGS=$VCPKG_FEATURE_FLAGS"
           echo "GITHUB_TOKEN is set: ${{ secrets.GITHUB_TOKEN != '' }}"
+          echo "GitHub repository: ${{ github.repository }}"
+          echo "GitHub ref: ${{ github.ref }}"
+          echo "GitHub SHA: ${{ github.sha }}"
           cmake -B build -S . \
-            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
+            -DVCPKG_MANIFEST_MODE=ON 2>&1 | tee cmake-output.log
+          echo "Checking for dependency graph mentions in output:"
+          grep -i "dependency\|snapshot\|graph" cmake-output.log || echo "No dependency graph messages found"
 
       - name: Build project
         run: cmake --build build
