@@ -1,0 +1,29 @@
+name: Submit Dependencies to GitHub Dependency Graph
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  dependency-submission:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up vcpkg
+        uses: lukka/run-vcpkg@v10
+        with:
+          vcpkgGitCommitId: 'latest'
+
+      - name: Build project (CMake example)
+        uses: lukka/run-cmake@v3
+        with:
+          cmakeListsOrSettingsJson: 'CMakeLists.txt'
+
+      - name: Submit dependencies to GitHub Dependency Graph
+        uses: github/dependency-submission-toolkit@v3
+        with:
+          # You can point to your vcpkg manifest, lockfile, or CMake config
+          manifest-path: vcpkg.json
