@@ -1,4 +1,4 @@
-name: Submit Dependencies to GitHub Dependency Graph
+name: Dependency Graph Submission
 
 on:
   push:
@@ -6,23 +6,11 @@ on:
       - main
 
 jobs:
-  dependency-submission:
+  submit-deps:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up vcpkg
-        uses: lukka/run-vcpkg@v10
-        with:
-          vcpkgGitCommitId: 'latest'
-
-      - name: Build project (CMake example)
-        uses: lukka/run-cmake@v3
-        with:
-          cmakeListsOrSettingsJson: 'CMakeLists.txt'
-
-      - name: Submit dependencies to GitHub Dependency Graph
-        uses: actions/dependency-submission-action@v3
-        with:
-          manifest-path: vcpkg.json
+      - name: Component detection and dependency submission
+        uses: advanced-security/component-detection-dependency-submission-action@v0.1.0
