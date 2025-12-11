@@ -10,11 +10,11 @@ int main() {
         text.setPosition(sf::Vector2f(60.f, 120.f)); // SFML 3.x requires Vector2f
 
         while (window.isOpen()) {
-            while (auto event = window.pollEvent()) { // SFML 3.x returns optional
-                if (event->type == sf::Event::Closed)
+            while (auto event = window.pollEvent()) {
+                if (event->getType() == sf::Event::Closed)
                     window.close();
             }
-
+    
             window.clear();
             window.draw(text);
             window.display();
