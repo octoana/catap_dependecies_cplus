@@ -15,7 +15,8 @@ jobs:
       VCPKG_FEATURE_FLAGS: dependencygraph
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Install SFML system dependencies
         run: |
@@ -26,11 +27,13 @@ jobs:
         run: |
           git clone https://github.com/microsoft/vcpkg.git
           ./vcpkg/bootstrap-vcpkg.sh
-        
-      - name: Install dependencies
+
+      - name: Install dependencies with vcpkg
         run: ./vcpkg/vcpkg install
 
-      - name: Build project (if applicable)
-        run: |
-          cmake -B build -S .
-          cmake --build build
+      - name: Configure project with CMake (vcpkg toolchain)
+        run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+
+      - name: Build project
+        run: cmake --build build
+        
