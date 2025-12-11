@@ -8,10 +8,8 @@ if(DEFINED ENV{VCPKG_ROOT} AND EXISTS "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcp
     set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
 endif()
 
-# Use CONFIG mode, without explicit components
-find_package(SFML CONFIG REQUIRED)
+find_package(SFML 3.0 COMPONENTS Graphics Window System REQUIRED)
 find_package(SQLite3 3.50.3 REQUIRED)
 
 add_executable(cpp-sfml-sqlite-test main.cpp)
-# Link only to available SFML targets
-target_link_libraries(cpp-sfml-sqlite-test PRIVATE SFML::Window SFML::System SQLite::SQLite3)
+target_link_libraries(cpp-sfml-sqlite-test PRIVATE SFML::Graphics SFML::Window SFML::System SQLite::SQLite3)
