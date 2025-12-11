@@ -15,4 +15,4 @@ jobs:
       - name: Component detection and dependency submission
         uses: advanced-security/component-detection-dependency-submission-action@v0.1.0
         with:
-          filePath: vcpkg.json
+          filePath: .
