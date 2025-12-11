@@ -1,18 +1,31 @@
-name: Dependency Graph Submission Test
+name: Build and Submit Dependencies
+
+permissions:
+  contents: write
+  id-token: write
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-  submit-deps:
+  build:
     runs-on: ubuntu-latest
+    env:
+      VCPKG_FEATURE_FLAGS: dependencygraph
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Component detection and dependency submission
-        uses: advanced-security/component-detection-dependency-submission-action@v0.1.0
-        with:
-          filePath: .
+      - name: Install vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          ./vcpkg/bootstrap-vcpkg.sh
+
+      - name: Install dependencies
+        run: ./vcpkg/vcpkg install
+
+      - name: Build project (if applicable)
+        run: |
+          cmake -B build -S .
+          cmake --build build
