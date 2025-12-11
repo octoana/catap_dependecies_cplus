@@ -53,7 +53,8 @@ jobs:
         if: success()
         run: |
           # Create dependency snapshot in GitHub Dependency Submission format
-          cat > /tmp/snapshot.json << 'EOF'
+          TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          cat > /tmp/snapshot.json << EOF
           {
             "version": 0,
             "sha": "${{ github.sha }}",
@@ -67,7 +68,7 @@ jobs:
               "version": "1.0.0",
               "url": "https://github.com/${{ github.repository }}"
             },
-            "scanned": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "scanned": "${TIMESTAMP}",
             "manifests": {
               "vcpkg.json": {
                 "name": "vcpkg.json",
