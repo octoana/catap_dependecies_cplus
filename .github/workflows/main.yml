@@ -28,9 +28,15 @@ jobs:
         run: |
           git clone https://github.com/microsoft/vcpkg.git
           ./vcpkg/bootstrap-vcpkg.sh
+          echo "vcpkg version:"
+          ./vcpkg/vcpkg version
 
       - name: Configure project with CMake (vcpkg toolchain)
-        run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+        run: |
+          echo "VCPKG_FEATURE_FLAGS=$VCPKG_FEATURE_FLAGS"
+          echo "GITHUB_TOKEN is set: ${{ secrets.GITHUB_TOKEN != '' }}"
+          cmake -B build -S . \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build project
         run: cmake --build build
