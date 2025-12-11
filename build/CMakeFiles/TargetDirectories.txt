@@ -1,3 +1,0 @@
-/Users/apsscolari/code/catap_dependecies_cplus/build/CMakeFiles/cpp-sfml-sqlite-test.dir
-/Users/apsscolari/code/catap_dependecies_cplus/build/CMakeFiles/edit_cache.dir
-/Users/apsscolari/code/catap_dependecies_cplus/build/CMakeFiles/rebuild_cache.dir
