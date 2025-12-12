@@ -76,14 +76,14 @@ jobs:
                   "source_location": "vcpkg.json"
                 },
                 "resolved": {
-                  "pkg:vcpkg/sfml@3.0.2": {
-                    "package_url": "pkg:vcpkg/sfml@3.0.2",
+                  "pkg:generic/sfml@3.0.2": {
+                    "package_url": "pkg:generic/sfml@3.0.2",
                     "relationship": "direct",
                     "scope": "runtime",
                     "dependencies": []
                   },
-                  "pkg:vcpkg/sqlite3@3.51.1": {
-                    "package_url": "pkg:vcpkg/sqlite3@3.51.1",
+                  "pkg:generic/sqlite3@3.51.1": {
+                    "package_url": "pkg:generic/sqlite3@3.51.1",
                     "relationship": "direct",
                     "scope": "runtime",
                     "dependencies": []
