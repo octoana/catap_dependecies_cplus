@@ -54,6 +54,18 @@ jobs:
         run: |
           # Create dependency snapshot in GitHub Dependency Submission format
           TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          
+          # Parse vcpkg.json and get installed versions from vcpkg
+          RESOLVED_DEPS=$(jq -r '.dependencies[]' vcpkg.json | while read -r dep; do
+            # Get the actual installed version from vcpkg
+            VERSION=$(find build/vcpkg_installed/x64-linux/share/$dep -name "vcpkg.spdx.json" 2>/dev/null | head -1 | xargs jq -r '.packages[0].versionInfo' 2>/dev/null || echo "unknown")
+            if [ "$VERSION" = "unknown" ]; then
+              # Fallback: try to extract from vcpkg installation log or use a placeholder
+              VERSION=$(grep "Installing.*$dep" build/vcpkg_manifest.log 2>/dev/null | grep -oP "$dep[^:]*:\K[^@]*@\K[^\s]+" | head -1 || echo "latest")
+            fi
+            echo "\"pkg:generic/$dep@$VERSION\": {\"package_url\": \"pkg:generic/$dep@$VERSION\", \"relationship\": \"direct\", \"scope\": \"runtime\", \"dependencies\": []}"
+          done | paste -sd, -)
+          
           cat > /tmp/snapshot.json << EOF
           {
             "version": 0,
@@ -64,7 +76,7 @@ jobs:
               "id": "${{ github.run_id }}"
             },
             "detector": {
-              "name": "vcpkg-manual",
+              "name": "vcpkg-manifest",
               "version": "1.0.0",
               "url": "https://github.com/${{ github.repository }}"
             },
@@ -76,18 +88,7 @@ jobs:
                   "source_location": "vcpkg.json"
                 },
                 "resolved": {
-                  "pkg:generic/sfml@3.0.2": {
-                    "package_url": "pkg:generic/sfml@3.0.2",
-                    "relationship": "direct",
-                    "scope": "runtime",
-                    "dependencies": []
-                  },
-                  "pkg:generic/sqlite3@3.51.1": {
-                    "package_url": "pkg:generic/sqlite3@3.51.1",
-                    "relationship": "direct",
-                    "scope": "runtime",
-                    "dependencies": []
-                  }
+                  ${RESOLVED_DEPS}
                 }
               }
             }
