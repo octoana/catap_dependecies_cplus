@@ -64,9 +64,11 @@ jobs:
               VERSION=$(grep "Installing.*$dep" build/vcpkg_manifest.log 2>/dev/null | grep -oP "$dep[^:]*:\K[^@]*@\K[^\s]+" | head -1 || echo "latest")
             fi
             
-            # Override SFML version to 3.0.0 for vulnerability testing
+            # Override versions for vulnerability testing
             if [ "$dep" = "sfml" ]; then
               VERSION="3.0.0"
+            elif [ "$dep" = "openssl" ]; then
+              VERSION="1.0.2u"
             fi
             
             echo "\"pkg:generic/$dep@$VERSION\": {\"package_url\": \"pkg:generic/$dep@$VERSION\", \"relationship\": \"direct\", \"scope\": \"runtime\", \"dependencies\": []}"

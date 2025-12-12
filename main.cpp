@@ -1,5 +1,7 @@
 #include <sqlite3.h>
 #include <SFML/Graphics.hpp>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
 #include <iostream>
 
 int main() {
@@ -13,8 +15,14 @@ int main() {
     }
     sqlite3_close(DB);
 
+    // Test OpenSSL
+    SSL_library_init();
+    OpenSSL_add_all_algorithms();
+    SSL_load_error_strings();
+    std::cout << "OpenSSL version: " << OpenSSL_version(OPENSSL_VERSION) << "\n";
+
     // Test SFML 3.0
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML + SQLite3 Test");
+    sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML + SQLite3 + OpenSSL Test");
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 

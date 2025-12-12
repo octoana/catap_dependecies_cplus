@@ -10,6 +10,7 @@ endif()
 
 find_package(SFML 3.0 COMPONENTS Graphics Window System REQUIRED)
 find_package(SQLite3 3.50.3 REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 add_executable(cpp-sfml-sqlite-test main.cpp)
-target_link_libraries(cpp-sfml-sqlite-test PRIVATE SFML::Graphics SFML::Window SFML::System SQLite::SQLite3)
+target_link_libraries(cpp-sfml-sqlite-test PRIVATE SFML::Graphics SFML::Window SFML::System SQLite::SQLite3 OpenSSL::SSL OpenSSL::Crypto)
