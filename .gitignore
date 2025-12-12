@@ -2,8 +2,7 @@
 build/
 cmake-build-*/
 
-# vcpkg
-vcpkg/
+# vcpkg installed packages (not the submodule itself)
 vcpkg_installed/
 
 # Compiled binaries
